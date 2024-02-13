@@ -3,19 +3,22 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8
+      nodejs: 10
     commands:
       - echo Installing dependencies...
-      - pip install -r requirements.txt
+      - npm install -g htmlhint # Install HTMLHint for HTML linting
+  pre_build:
+    commands:
+      - echo Checking the existence of index.html...
+      - test -f index.html # This will fail if index.html does not exist
   build:
     commands:
-      - echo Build started on `date`
-      - echo Compiling the code...
-      # Hier fügen Sie die Befehle ein, die benötigt werden, um Ihren Code zu kompilieren
+      - echo Linting HTML...
+      - htmlhint index.html # Perform HTML linting
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
-    - '**/*'
+    - index.html
   discard-paths: yes
